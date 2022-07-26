@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: robot
+  - changeSet:
+      id: 1
+      author: Robot
+      changes:
+        - sql:
+            sql: DROP TABLE IF EXISTS "phone_number"
+        - createTable:
+            tableName: phone_number
+            columns:
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cell_phone
+                  type: varchar(50)
+              - column:
+                  name: work_phone
+                  type: varchar(50)
+
+  - changeSet:
+      id: 2
+      author: Robot
+      changes:
+        - insert:
+            tableName: phone_number
+            columns:
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: name
+                  value: "Alex Robinson"
+              - column:
+                  name: cell_phone
+                  value: "969-020-7879"
+              - column:
+                  name: work_phone
+                  value: "969-123-4567"
+
+  - changeSet:
+      id: 3
+      author: Robot
+      changes:
+        - insert:
+            tableName: phone_number
+            columns:
+              - column:
+                  name: user_id
+                  value: 2
+              - column:
+                  name: name
+                  value: "John Barnett"
+              - column:
+                  name: cell_phone
+                  value: "2095308990"
+              - column:
+                  name: work_phone
+                  value: ""
