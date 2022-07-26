@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  phonenumber-service:
+    image: phonenumber-service:0.0.1
+    ports:
+      - "9997:9997"
+    networks:
+      - poc-network
+    restart: on-failure
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/phone_db
+
+networks:
+  poc-network:
+    external: true
