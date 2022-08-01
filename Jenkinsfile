@@ -22,8 +22,6 @@ node {
             def version = sh(script: "./gradlew properties -q | grep \"version:\" | awk '{print \$2}'", returnStdout: true).trim()
             serviceName = sh(script: "./gradlew properties -q | grep \"archivesBaseName:\" | awk '{print \$2}'", returnStdout: true).trim()
             sh "echo Service: $serviceName Version: $version"
-            // remove the images on this node. The next job should pull the image from the local registry
-            sh("docker images | grep localhost:5000/$serviceName | tr -s ' ' | cut -d ' ' -f 2 | xargs -I {} docker rmi localhost:5000/$serviceName:{}")
             build job: 'poc-master-test', propagate: true, wait: true
         }
     } catch(e) {
@@ -31,6 +29,8 @@ node {
     } finally {
         stage('Clean Up and Notify') {
            sh('echo cleaning up tasks......')
+           // remove the images on this node
+           sh("docker images | grep localhost:5000/$serviceName | tr -s ' ' | cut -d ' ' -f 2 | xargs -I {} docker rmi localhost:5000/$serviceName:{}")
            sh('echo "If Build Fail: Sending email ............."')
            //mail to: "me@testemail.com"
         }
